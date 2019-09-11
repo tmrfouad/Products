@@ -27,14 +27,14 @@ namespace Products.Web.Controllers
             return Json(products);
         }
 
-        [HttpGet("/search/{name}")]
+        [HttpGet("api/products/search/{name}")]
         public ActionResult<IEnumerable<Product>> SearchProducts(string name)
         {
             var products = _productManager.SearchProducts(name);
             return Json(products);
         }
 
-        [HttpGet("/{productId}")]
+        [HttpGet("api/products/{productId}")]
         public ActionResult<Product> GetProduct(int productId)
         {
             var product = _productManager.GetProduct(productId);
