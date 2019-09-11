@@ -1,0 +1,35 @@
+<a [routerLink]="['/edit-product']" class="btn btn-success">
+  Add
+</a>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Product ID</th>
+      <th scope="col">Product Name</th>
+      <th scope="col">Price</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of products; index as i">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>
+        {{ product.id }}
+      </td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.price | number }}</td>
+      <td>
+        <a [routerLink]="['/edit-product', product.id]" class="btn btn-link"
+          >Edit</a
+        >
+        <a
+          href="javascript:void(0)"
+          (click)="onRemoveBtnClicked(product.id)"
+          class="btn btn-link"
+          >Remove</a
+        >
+      </td>
+    </tr>
+  </tbody>
+</table>

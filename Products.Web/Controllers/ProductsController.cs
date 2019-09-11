@@ -11,7 +11,7 @@ using Products.Business;
 
 namespace Products.Web.Controllers
 {
-    [Route("api/products")]
+    [Route("api/[controller]")]
     public class ProductsController : Controller
     {
         private ProductManager _productManager;
@@ -27,14 +27,14 @@ namespace Products.Web.Controllers
             return Json(products);
         }
 
-        [HttpGet("api/products/search/{name}")]
+        [HttpGet("search/{name}")]
         public ActionResult<IEnumerable<Product>> SearchProducts(string name)
         {
             var products = _productManager.SearchProducts(name);
             return Json(products);
         }
 
-        [HttpGet("api/products/{productId}")]
+        [HttpGet("{productId}")]
         public ActionResult<Product> GetProduct(int productId)
         {
             var product = _productManager.GetProduct(productId);
@@ -42,20 +42,20 @@ namespace Products.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Product> AddProduct(Product product)
+        public ActionResult<Product> AddProduct([FromBody] Product product)
         {
             var newProduct = _productManager.AddProduct(product);
             return Json(newProduct);
         }
 
-        [HttpPatch]
-        public ActionResult<Product> UpdateProduct(int productId, Product updates)
+        [HttpPatch("{productId}")]
+        public ActionResult<Product> UpdateProduct(int productId, [FromBody] Product updates)
         {
             var newProduct = _productManager.UpdateProduct(productId, updates);
             return Json(newProduct);
         }
 
-        [HttpDelete]
+        [HttpDelete("{productId}")]
         public void DeleteProduct(int productId)
         {
             _productManager.DeleteProduct(productId);
