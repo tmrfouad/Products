@@ -40,8 +40,4 @@ export class ProductsComponent implements AfterViewInit {
       this.products = this.products.filter(p => p.id !== productId);
     });
   }
-
-  onAddBtnClicked() {
-    this.router.navigate(['/edit-product']);
-  }
 }

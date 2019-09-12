@@ -47,8 +47,4 @@ export class EditProductComponent implements OnInit {
       });
     }
   }
-
-  onCancelBtnClicked() {
-    this.router.navigate(['/products']);
-  }
 }

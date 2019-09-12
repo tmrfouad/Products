@@ -1,6 +1,6 @@
-<a [routerLink]="['/edit-product']" class="btn btn-success">
+<button [routerLink]="['/edit-product']" class="btn btn-success">
   Add
-</a>
+</button>
 <div class="form-group mt-3">
   <input
     type="text"
@@ -10,7 +10,8 @@
     class="form-control"
   />
 </div>
-<table class="table table-striped">
+<ng-template #loading>Loading...</ng-template>
+<table class="table table-striped" *ngIf="products; else loading">
   <thead>
     <tr>
       <th scope="col">#</th>
