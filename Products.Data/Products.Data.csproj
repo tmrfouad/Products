@@ -6,12 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="System.Data.SqlClient">
-      <HintPath>..\..\..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\system.data.sqlclient\4.6.0\ref\netcoreapp2.1\System.Data.SqlClient.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="1.0.19249.1" />
   </ItemGroup>
 
 </Project>

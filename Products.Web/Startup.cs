@@ -9,7 +9,7 @@ using Products.Business.Managers;
 using Products.Data.Repositories;
 using Products.Web.Extensions;
 using Serilog;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Products.Web
 {

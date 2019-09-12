@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using Dapper;
 using System.Linq;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Products.Data.Repositories
 {
