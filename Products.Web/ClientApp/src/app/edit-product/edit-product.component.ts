@@ -10,13 +10,16 @@ import { ProductService } from '../services/product.service';
 })
 export class EditProductComponent implements OnInit {
   productForm = new FormGroup({
-    id: new FormControl(-1),
-    name: new FormControl(''),
-    price: new FormControl(0)
+    id: new FormControl(),
+    name: new FormControl(),
+    price: new FormControl(),
+    createdOn: new FormControl(),
+    modifiedOn: new FormControl()
   });
 
   productId: number;
-  product: Product;
+  isLoading = true;
+  errMsg = '';
 
   constructor(
     private prodService: ProductService,
@@ -28,13 +31,20 @@ export class EditProductComponent implements OnInit {
   ngOnInit() {
     this.productId = +this.route.snapshot.paramMap.get('id');
 
-    this.prodService.get(this.productId).subscribe((product: Product) => {
-      this.product = product;
-      this.productForm.setValue(this.product);
-    });
+    if (this.productId) {
+      this.prodService.get(this.productId).subscribe((product: Product) => {
+        this.isLoading = false;
+        this.productForm.setValue(product);
+      });
+    } else {
+      this.isLoading = false;
+      this.productForm.reset();
+    }
   }
 
   onSaveBtnClicked() {
+    this.errMsg = '';
+
     if (this.productId) {
       this.prodService
         .update(this.productId, this.productForm.value)

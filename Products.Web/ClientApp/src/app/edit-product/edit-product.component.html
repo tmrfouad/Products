@@ -1,10 +1,19 @@
 <ng-template #loading>Loading ...</ng-template>
-<form
-  *ngIf="(productId && product) || !productId; else loading"
-  [formGroup]="productForm"
->
-  <input type="hidden" name="id" formControlName="id" />
+<form *ngIf="!isLoading; else loading" [formGroup]="productForm">
   <div class="form-group">
+    <input type="hidden" name="id" id="id" formControlName="id" />
+    <input
+      type="hidden"
+      name="createdOn"
+      id="createdOn"
+      formControlName="createdOn"
+    />
+    <input
+      type="hidden"
+      name="modifiedOn"
+      id="modifiedOn"
+      formControlName="modifiedOn"
+    />
     <label for="name">Name</label>
     <input
       id="name"
@@ -30,4 +39,5 @@
   <button class="btn btn-secondary ml-1" [routerLink]="['/products']">
     Cancel
   </button>
+  <span class="text-danger ml-3" *ngIf="errMsg">{{ errMsg }}</span>
 </form>

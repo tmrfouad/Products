@@ -39,7 +39,7 @@ namespace Products.Data.Repositories
             Product product = null;
             using (_connection)
             {
-                product = _connection.Query<Product>("GetProduct", new { id }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                product = _connection.Query<Product>("GetProduct", new { ProductID = id }, commandType: CommandType.StoredProcedure).FirstOrDefault();
             }
             return product;
         }
@@ -49,7 +49,12 @@ namespace Products.Data.Repositories
             Product newProduct = null;
             using (_connection)
             {
-                newProduct = _connection.Query<Product>("AddProduct", new { entity.Name, entity.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                newProduct = _connection.Query<Product>("AddProduct", new
+                {
+                    entity.Name,
+                    entity.Price
+                }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+
             }
             return newProduct;
         }
@@ -58,7 +63,12 @@ namespace Products.Data.Repositories
             Product updatedProduct = null;
             using (_connection)
             {
-                updatedProduct = _connection.Query<Product>("UpdateProduct", new { id, updates.Name, updates.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                updatedProduct = _connection.Query<Product>("UpdateProduct", new
+                {
+                    ProductID = id,
+                    updates.Name,
+                    updates.Price
+                }, commandType: CommandType.StoredProcedure).FirstOrDefault();
             }
             return updatedProduct;
         }
@@ -67,7 +77,7 @@ namespace Products.Data.Repositories
         {
             using (_connection)
             {
-                _connection.Execute("DeleteProduct", new { id }, commandType: CommandType.StoredProcedure);
+                _connection.Execute("DeleteProduct", new { ProductID = id }, commandType: CommandType.StoredProcedure);
             }
         }
     }

@@ -36,8 +36,10 @@ export class ProductsComponent implements AfterViewInit {
   }
 
   onRemoveBtnClicked(productId: number) {
-    this.prodService.delete(productId).subscribe(() => {
-      this.products = this.products.filter(p => p.id !== productId);
-    });
+    if (confirm('Are you sure you want to remove that product?')) {
+      this.prodService.delete(productId).subscribe(() => {
+        this.products = this.products.filter(p => p.id !== productId);
+      });
+    }
   }
 }

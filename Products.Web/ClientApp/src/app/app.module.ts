@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { ProductsComponent } from './products/products.component';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { ProductService } from './services/product.service';
+import { CustomeErrorHandler } from './services/custome-error-handler';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,15 @@ import { ProductService } from './services/product.service';
       { path: 'edit-product', component: EditProductComponent }
     ])
   ],
-  providers: [ProductService],
+  providers: [
+    ProductService,
+    [
+      {
+        provide: ErrorHandler,
+        useClass: CustomeErrorHandler
+      }
+    ]
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
