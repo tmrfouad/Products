@@ -1,13 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Dapper;
-using System.Data;
 using Products.Data.Entities;
-using Products.Business;
+using Products.Business.Managers;
 
 namespace Products.Web.Controllers
 {
@@ -15,9 +9,9 @@ namespace Products.Web.Controllers
     public class ProductsController : Controller
     {
         private ProductManager _productManager;
-        public ProductsController()
+        public ProductsController(ProductManager productManager)
         {
-            _productManager = new ProductManager();
+            _productManager = productManager;
         }
 
         [HttpGet]

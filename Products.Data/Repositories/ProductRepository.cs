@@ -1,66 +1,73 @@
 ﻿using Products.Data.Entities;
-using System;
 using System.Collections.Generic;
 using System.Data;
 using Dapper;
 using System.Linq;
+using System.Data.SqlClient;
 
 namespace Products.Data.Repositories
 {
-    public class ProductRepository : RepositoryBase
+    public class ProductRepository : IProductRepository
     {
-        public IEnumerable<Product> GetProducts()
+        public SqlConnection _connection { get; set; }
+
+        public ProductRepository(SqlConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public IEnumerable<Product> GetAll()
         {
             var products = new List<Product>();
-            using (connection)
+            using (_connection)
             {
-                products = connection.Query<Product>("GetAllProducts", commandType: CommandType.StoredProcedure).ToList();
+                products = _connection.Query<Product>("GetAllProducts", commandType: CommandType.StoredProcedure).ToList();
             }
             return products;
         }
-        public IEnumerable<Product> SearchProducts(string Name)
+        public IEnumerable<Product> Search(string search)
         {
             var products = new List<Product>();
-            using (connection)
+            using (_connection)
             {
-                products = connection.Query<Product>("SearchProducts", new { Name }, commandType: CommandType.StoredProcedure).ToList();
+                products = _connection.Query<Product>("SearchProducts", new { Search = search }, commandType: CommandType.StoredProcedure).ToList();
             }
             return products;
         }
-        public Product GetProduct(int ProductId)
+        public Product Get(int id)
         {
             Product product = null;
-            using (connection)
+            using (_connection)
             {
-                product = connection.Query<Product>("GetProduct", new { ProductId }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                product = _connection.Query<Product>("GetProduct", new { id }, commandType: CommandType.StoredProcedure).FirstOrDefault();
             }
             return product;
         }
 
-        public Product AddProduct(Product product)
+        public Product Add(Product entity)
         {
             Product newProduct = null;
-            using (connection)
+            using (_connection)
             {
-                newProduct = connection.Query<Product>("AddProduct", new { product.Name, product.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                newProduct = _connection.Query<Product>("AddProduct", new { entity.Name, entity.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
             }
             return newProduct;
         }
-        public Product UpdateProduct(int ProductId, Product updates)
+        public Product Update(int id, Product updates)
         {
             Product updatedProduct = null;
-            using (connection)
+            using (_connection)
             {
-                updatedProduct = connection.Query<Product>("UpdateProduct", new { ProductId, updates.Name, updates.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                updatedProduct = _connection.Query<Product>("UpdateProduct", new { id, updates.Name, updates.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
             }
             return updatedProduct;
         }
 
-        public void DeleteProduct(int ProductId)
+        public void Delete(int id)
         {
-            using (connection)
+            using (_connection)
             {
-                connection.Execute("DeleteProduct", new { ProductId }, commandType: CommandType.StoredProcedure);
+                _connection.Execute("DeleteProduct", new { id }, commandType: CommandType.StoredProcedure);
             }
         }
     }

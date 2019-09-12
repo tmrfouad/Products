@@ -3,38 +3,50 @@ using Products.Data.Repositories;
 using System;
 using System.Collections.Generic;
 
-namespace Products.Business
+namespace Products.Business.Managers
 {
     public class ProductManager
     {
+        private IProductRepository _repository;
+
+        public ProductManager()
+        {
+
+        }
+
+        public ProductManager(IProductRepository repository)
+        {
+            _repository = repository;
+        }
+
         public IEnumerable<Product> GetProducts()
         {
-            return new ProductRepository().GetProducts();
+            return _repository.GetAll();
         }
 
         public IEnumerable<Product> SearchProducts(string Name)
         {
-            return new ProductRepository().SearchProducts(Name);
+            return _repository.Search(Name);
         }
 
         public Product GetProduct(int ProductId)
         {
-            return new ProductRepository().GetProduct(ProductId);
+            return _repository.Get(ProductId);
         }
 
         public Product AddProduct(Product product)
         {
-            return new ProductRepository().AddProduct(product);
+            return _repository.Add(product);
         }
 
         public Product UpdateProduct(int ProductId, Product updates)
         {
-            return new ProductRepository().UpdateProduct(ProductId, updates);
+            return _repository.Update(ProductId, updates);
         }
 
         public void DeleteProduct(int ProductId)
         {
-            new ProductRepository().DeleteProduct(ProductId);
+            _repository.Delete(ProductId);
         }
     }
 }
