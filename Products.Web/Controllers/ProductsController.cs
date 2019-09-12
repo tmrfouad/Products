@@ -27,7 +27,7 @@ namespace Products.Web.Controllers
             return Json(products);
         }
 
-        [HttpGet("search/{name}")]
+        [HttpGet("search/{name?}")]
         public ActionResult<IEnumerable<Product>> SearchProducts(string name)
         {
             var products = _productManager.SearchProducts(name);
