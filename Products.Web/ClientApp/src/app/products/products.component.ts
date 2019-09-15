@@ -10,6 +10,7 @@ import {
   switchMap,
   startWith
 } from 'rxjs/operators';
+import { MatDialog, MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-products',
@@ -19,7 +20,7 @@ export class ProductsComponent implements AfterViewInit {
   products: Product[];
   @ViewChild('SearchInput') searchInput: ElementRef;
 
-  constructor(private prodService: ProductService, private router: Router) {}
+  constructor(private prodService: ProductService, private dialog: MatDialog) {}
 
   ngAfterViewInit(): void {
     fromEvent<any>(this.searchInput.nativeElement, 'keyup')
@@ -36,10 +37,43 @@ export class ProductsComponent implements AfterViewInit {
   }
 
   onRemoveBtnClicked(productId: number) {
-    if (confirm('Are you sure you want to remove that product?')) {
-      this.prodService.delete(productId).subscribe(() => {
-        this.products = this.products.filter(p => p.id !== productId);
-      });
-    }
+    const dialogRef = this.dialog.open(RemoveProductDielogComponent, {
+      width: '400px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.prodService.delete(productId).subscribe(() => {
+          this.products = this.products.filter(p => p.id !== productId);
+        });
+      }
+    });
+  }
+}
+
+@Component({
+  selector: 'app-dialog-overview-example-dialog',
+  template: `
+    <h1 mat-dialog-title>Hi</h1>
+    <div mat-dialog-content>
+      <p>Are you sure want to remove this product?</p>
+    </div>
+    <div mat-dialog-actions>
+      <button
+        class="btn btn-secondary ml-1"
+        [mat-dialog-close]="'yes'"
+        cdkFocusInitial
+      >
+        Yes
+      </button>
+      <button class="btn btn-secondary ml-1" (click)="onNoClick()">No</button>
+    </div>
+  `
+})
+export class RemoveProductDielogComponent {
+  constructor(public dialogRef: MatDialogRef<RemoveProductDielogComponent>) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }

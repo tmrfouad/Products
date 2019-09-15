@@ -22,7 +22,12 @@
       formControlName="name"
       class="form-control"
     />
-    <div class="text-danger ml-3" *ngIf="name.invalid && name.errors.required">
+    <div
+      class="text-danger ml-3"
+      *ngIf="
+        (name.dirty || name.touched) && name.invalid && name.errors.required
+      "
+    >
       The name field is required!
     </div>
   </div>
@@ -35,17 +40,19 @@
       formControlName="price"
       class="form-control"
     />
-    <div
-      class="text-danger ml-3"
-      *ngIf="price.invalid && price.errors.required"
-    >
-      The price field is required!
-    </div>
-    <div
-      class="text-danger ml-3"
-      *ngIf="price.invalid && price.errors.invalidPrice"
-    >
-      The price must be greater than zero!
+    <div *ngIf="price.dirty || price.touched">
+      <div
+        class="text-danger ml-3"
+        *ngIf="price.invalid && price.errors.required"
+      >
+        The price field is required!
+      </div>
+      <div
+        class="text-danger ml-3"
+        *ngIf="price.invalid && price.errors.invalidPrice"
+      >
+        The price must be greater than zero!
+      </div>
     </div>
   </div>
   <button

@@ -1,10 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  AbstractControl
-} from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Product } from '../models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
@@ -37,8 +32,7 @@ export class EditProductComponent implements OnInit {
   constructor(
     private prodService: ProductService,
     private route: ActivatedRoute,
-    private router: Router,
-    @Inject('BASE_URL') private baseUrl: string
+    private router: Router
   ) {}
 
   ngOnInit() {
