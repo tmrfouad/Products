@@ -11,38 +11,43 @@ namespace Products.Business.Managers
         private IProductRepository _repository;
         private IMapper _mapper;
 
+        public ProductManager()
+        {
+
+        }
+
         public ProductManager(IProductRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public IEnumerable<ProductDTO> GetProducts()
+        public virtual IEnumerable<ProductDTO> GetProducts()
         {
             return _mapper.Map<IEnumerable<ProductDTO>>(_repository.GetAll());
         }
 
-        public IEnumerable<ProductDTO> SearchProducts(string Name)
+        public virtual IEnumerable<ProductDTO> SearchProducts(string Name)
         {
             return _mapper.Map<IEnumerable<ProductDTO>>(_repository.Search(Name));
         }
 
-        public ProductDTO GetProduct(int ProductId)
+        public virtual ProductDTO GetProduct(int ProductId)
         {
             return _mapper.Map<ProductDTO>(_repository.Get(ProductId));
         }
 
-        public ProductDTO AddProduct(ProductDTO product)
+        public virtual ProductDTO AddProduct(ProductDTO product)
         {
             return _mapper.Map<ProductDTO>(_repository.Add(_mapper.Map<Product>(product)));
         }
 
-        public ProductDTO UpdateProduct(int ProductId, ProductDTO updates)
+        public virtual ProductDTO UpdateProduct(int ProductId, ProductDTO updates)
         {
             return _mapper.Map<ProductDTO>(_repository.Update(ProductId, _mapper.Map<Product>(updates)));
         }
 
-        public void DeleteProduct(int ProductId)
+        public virtual void DeleteProduct(int ProductId)
         {
             _repository.Delete(ProductId);
         }

@@ -44,7 +44,7 @@ namespace Products.Web.Controllers
         {
             try
             {
-                _logger.LogInformation("Searching products by the value '{0}' from database", name);
+                _logger.LogInformation("Searching products by the name '{0}' from database", name);
                 var products = await Task.Run(() => _productManager.SearchProducts(name));
 
                 _logger.LogInformation("Returning '{0}' product(s)", products.Count());
