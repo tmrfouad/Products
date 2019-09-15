@@ -1,5 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl
+} from '@angular/forms';
 import { Product } from '../models/product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
@@ -11,8 +16,16 @@ import { ProductService } from '../services/product.service';
 export class EditProductComponent implements OnInit {
   productForm = new FormGroup({
     id: new FormControl(),
-    name: new FormControl(),
-    price: new FormControl(),
+    name: new FormControl(null, [Validators.required]),
+    price: new FormControl(null, [
+      Validators.required,
+      control => {
+        const valid = +control.value > 0;
+        return valid
+          ? null
+          : { invalidPrice: { valid: false, value: control.value } };
+      }
+    ]),
     createdOn: new FormControl(),
     modifiedOn: new FormControl()
   });
@@ -56,5 +69,12 @@ export class EditProductComponent implements OnInit {
         this.router.navigate(['/products']);
       });
     }
+  }
+
+  get name() {
+    return this.productForm.get('name');
+  }
+  get price() {
+    return this.productForm.get('price');
   }
 }

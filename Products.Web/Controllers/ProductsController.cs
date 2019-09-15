@@ -128,6 +128,7 @@ namespace Products.Web.Controllers
         [HttpDelete("{productId}")]
         public ActionResult DeleteProduct(int productId)
         {
+            productId = 0;
             try
             {
                 if (productId == 0)
