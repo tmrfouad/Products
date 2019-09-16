@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 namespace Products.Web.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class ProductsController : Controller
     {
         private ProductManager _productManager;
@@ -84,7 +85,7 @@ namespace Products.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> AddProduct([FromBody] ProductDTO product)
+        public async Task<ActionResult<ProductDTO>> AddProduct(ProductDTO product)
         {
             try
             {
@@ -104,7 +105,7 @@ namespace Products.Web.Controllers
         }
 
         [HttpPatch("{productId}")]
-        public async Task<ActionResult<ProductDTO>> UpdateProduct(int productId, [FromBody] ProductDTO updates)
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(int productId, ProductDTO updates)
         {
             try
             {

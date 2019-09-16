@@ -17,6 +17,7 @@ import {
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { ProductService } from './services/product.service';
 import { CustomeErrorHandler } from './services/custome-error-handler';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CustomeErrorHandler } from './services/custome-error-handler';
     HomeComponent,
     ProductsComponent,
     EditProductComponent,
-    RemoveProductDielogComponent
+    RemoveProductDielogComponent,
+    ErrorDialogComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -41,7 +43,7 @@ import { CustomeErrorHandler } from './services/custome-error-handler';
       { path: 'edit-product', component: EditProductComponent }
     ])
   ],
-  entryComponents: [RemoveProductDielogComponent],
+  entryComponents: [RemoveProductDielogComponent, ErrorDialogComponent],
   providers: [
     ProductService,
     [
