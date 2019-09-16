@@ -54,7 +54,7 @@ export class ProductsComponent implements AfterViewInit {
 @Component({
   selector: 'app-dialog-overview-example-dialog',
   template: `
-    <h1 mat-dialog-title>Hi</h1>
+    <h1 mat-dialog-title>Confirm</h1>
     <div mat-dialog-content>
       <p>Are you sure want to remove this product?</p>
     </div>
