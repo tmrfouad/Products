@@ -22,7 +22,7 @@ namespace Products.Web.Tests
         {
             // Arrange
             var dbProducts = Fixtures.Products;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.GetProducts()).Returns(dbProducts);
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -45,7 +45,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var search = "";
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.SearchProducts(search)).Returns(dbProducts);
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -68,7 +68,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var search = "test";
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.SearchProducts(search)).Returns(dbProducts.Where(p => p.Name.ToLower().Contains(search)).ToList());
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -91,7 +91,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var search = "test1";
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.SearchProducts(search)).Returns(dbProducts.Where(p => p.Name.ToLower().Contains(search)).ToList());
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -114,7 +114,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var productId = 2;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.GetProduct(productId)).Returns(dbProducts.FirstOrDefault(p => p.ID == productId));
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -137,7 +137,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var productId = 0;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.GetProduct(productId)).Returns(dbProducts.FirstOrDefault(p => p.ID == productId));
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -160,7 +160,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var productId = 10;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.GetProduct(productId)).Returns(dbProducts.FirstOrDefault(p => p.ID == productId));
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -183,7 +183,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var newProduct = new ProductDTO { ID = 8, Name = "New Product", Price = 10 };
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.AddProduct(newProduct)).Returns(() => 
             {
                 dbProducts.Add(newProduct);
@@ -209,7 +209,7 @@ namespace Products.Web.Tests
         {
             // Arrange
             var dbProducts = Fixtures.Products;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.AddProduct(null)).Returns(dbProducts.FirstOrDefault(p => p.ID == dbProducts.Count));
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -233,7 +233,7 @@ namespace Products.Web.Tests
             var dbProducts = Fixtures.Products;
             var productId = 3;
             var updates = new ProductDTO { Name = "Updated Product" };
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.UpdateProduct(productId, updates)).Returns(() =>
             {
                 dbProducts.FirstOrDefault(p => p.ID == productId).Name = updates.Name;
@@ -260,7 +260,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var productId = 3;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.UpdateProduct(productId, null)).Returns(dbProducts.FirstOrDefault(p => p.ID == productId));
 
             var logger = new Mock<ILogger<ProductsController>>();
@@ -284,7 +284,7 @@ namespace Products.Web.Tests
             var dbProducts = Fixtures.Products;
             var productId = 0;
             var updates = new ProductDTO { Name = "Updated Product" };
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             manager.Setup(m => m.UpdateProduct(productId, updates)).Returns(() =>
             {
                 dbProducts.FirstOrDefault(p => p.ID == productId).Name = updates.Name;
@@ -311,7 +311,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var productId = 0;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             var logger = new Mock<ILogger<ProductsController>>();
 
             var controller = new ProductsController(manager.Object, logger.Object);
@@ -332,7 +332,7 @@ namespace Products.Web.Tests
             // Arrange
             var dbProducts = Fixtures.Products;
             var productId = 4;
-            var manager = new Mock<ProductManager>();
+            var manager = new Mock<IProductManager>();
             var logger = new Mock<ILogger<ProductsController>>();
 
             var controller = new ProductsController(manager.Object, logger.Object);

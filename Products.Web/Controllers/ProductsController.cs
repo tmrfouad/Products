@@ -14,10 +14,10 @@ namespace Products.Web.Controllers
     [ApiController]
     public class ProductsController : Controller
     {
-        private ProductManager _productManager;
+        private IProductManager _productManager;
         private ILogger<ProductsController> _logger;
 
-        public ProductsController(ProductManager productManager, ILogger<ProductsController> logger)
+        public ProductsController(IProductManager productManager, ILogger<ProductsController> logger)
         {
             _productManager = productManager;
             _logger = logger;

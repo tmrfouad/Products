@@ -6,15 +6,12 @@ using Products.Data.Entities;
 
 namespace Products.Business.Managers
 {
-    public class ProductManager
+    public class ProductManager : IProductManager
     {
         private IProductRepository _repository;
         private IMapper _mapper;
 
-        public ProductManager()
-        {
-
-        }
+        public ProductManager() {}
 
         public ProductManager(IProductRepository repository, IMapper mapper)
         {
@@ -22,32 +19,32 @@ namespace Products.Business.Managers
             _mapper = mapper;
         }
 
-        public virtual IEnumerable<ProductDTO> GetProducts()
+        public IEnumerable<ProductDTO> GetProducts()
         {
             return _mapper.Map<IEnumerable<ProductDTO>>(_repository.GetAll());
         }
 
-        public virtual IEnumerable<ProductDTO> SearchProducts(string Name)
+        public IEnumerable<ProductDTO> SearchProducts(string Name)
         {
             return _mapper.Map<IEnumerable<ProductDTO>>(_repository.Search(Name));
         }
 
-        public virtual ProductDTO GetProduct(int ProductId)
+        public ProductDTO GetProduct(int ProductId)
         {
             return _mapper.Map<ProductDTO>(_repository.Get(ProductId));
         }
 
-        public virtual ProductDTO AddProduct(ProductDTO product)
+        public ProductDTO AddProduct(ProductDTO product)
         {
             return _mapper.Map<ProductDTO>(_repository.Add(_mapper.Map<Product>(product)));
         }
 
-        public virtual ProductDTO UpdateProduct(int ProductId, ProductDTO updates)
+        public ProductDTO UpdateProduct(int ProductId, ProductDTO updates)
         {
             return _mapper.Map<ProductDTO>(_repository.Update(ProductId, _mapper.Map<Product>(updates)));
         }
 
-        public virtual void DeleteProduct(int ProductId)
+        public void DeleteProduct(int ProductId)
         {
             _repository.Delete(ProductId);
         }

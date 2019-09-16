@@ -31,7 +31,7 @@ namespace Products.Web
                 return new ProductRepository(connection);
             });
 
-            services.AddScoped<ProductManager, ProductManager>();
+            services.AddScoped<IProductManager, ProductManager>();
 
             services.AddAutoMapper();
 
