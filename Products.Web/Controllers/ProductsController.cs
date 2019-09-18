@@ -11,12 +11,13 @@ using System.Threading.Tasks;
 namespace Products.Web.Controllers
 {
     [Route("api/[controller]")]
+    [ApiController]
     public class ProductsController : Controller
     {
-        private ProductManager _productManager;
+        private IProductManager _productManager;
         private ILogger<ProductsController> _logger;
 
-        public ProductsController(ProductManager productManager, ILogger<ProductsController> logger)
+        public ProductsController(IProductManager productManager, ILogger<ProductsController> logger)
         {
             _productManager = productManager;
             _logger = logger;
@@ -28,14 +29,15 @@ namespace Products.Web.Controllers
             try
             {
                 _logger.LogInformation("Fetching all products from database");
-                var products = await Task.Run(() => _productManager.GetProducts());
+                var products = await _productManager.GetProducts();
                 _logger.LogInformation("Returning '{0}' product(s)", products.Count());
 
-                return await Task.Run(() => Json(products));
+                return Ok(products);
             }
             catch (Exception)
             {
-                return await Task.Run(() => StatusCode(StatusCodes.Status500InternalServerError, "Error getting products!"));
+                _logger.LogError("Error getting products!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting products!");
             }
         }
 
@@ -45,18 +47,16 @@ namespace Products.Web.Controllers
             try
             {
                 _logger.LogInformation("Searching products by the name '{0}' from database", name);
-                var products = await Task.Run(() => _productManager.SearchProducts(name));
+                var products = await _productManager.SearchProducts(name);
 
                 _logger.LogInformation("Returning '{0}' product(s)", products.Count());
 
-                if (!products.Any())
-                    return await Task.Run(() => NotFound("No products found for this search criteria!"));
-
-                return await Task.Run(() => Json(products));
+                return Ok(products);
             }
             catch (Exception)
             {
-                return await Task.Run(() => StatusCode(StatusCodes.Status500InternalServerError, "Error getting products!"));
+                _logger.LogError("Error getting products!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting products!");
             }
         }
 
@@ -66,83 +66,87 @@ namespace Products.Web.Controllers
             try
             {
                 if (productId == 0)
-                    return await Task.Run(() => BadRequest("No product id provided!"));
+                    return BadRequest("No product id provided!");
 
                 _logger.LogInformation("Fetching products with id '{0}' from database", productId);
-                var product = await Task.Run(() => _productManager.GetProduct(productId));
+                var product = await _productManager.GetProduct(productId);
                 _logger.LogInformation("Returning '{0}' product(s)", product == null ? 0 : 1);
 
                 if (product == null)
-                    return await Task.Run(() => NotFound("No product found with this id!"));
+                    return NotFound("No product found with this id!");
 
-                return await Task.Run(() => Json(product));
+                return Ok(product);
             }
             catch (Exception)
             {
-                return await Task.Run(() => StatusCode(StatusCodes.Status500InternalServerError, "Error getting product!"));
+                _logger.LogError("Error getting product!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error getting product!");
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult<ProductDTO>> AddProduct([FromBody] ProductDTO product)
+        public async Task<ActionResult<ProductDTO>> AddProduct(ProductDTO product)
         {
             try
             {
                 if (product == null)
-                    return await Task.Run(() => BadRequest("No product provided!"));
+                    return BadRequest("No product provided!");
 
                 _logger.LogInformation("Adding new product");
-                var newProduct = await Task.Run(() => _productManager.AddProduct(product));
+                var newProduct = await _productManager.AddProduct(product);
                 _logger.LogInformation("Product was added with id: '{0}'", newProduct.ID);
 
-                return await Task.Run(() => Json(newProduct));
+                return Ok(newProduct);
             }
             catch (Exception)
             {
-                return await Task.Run(() => StatusCode(StatusCodes.Status500InternalServerError, "Error adding product!"));
+                _logger.LogError("Error adding product!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error adding product!");
             }
         }
 
         [HttpPatch("{productId}")]
-        public async Task<ActionResult<ProductDTO>> UpdateProduct(int productId, [FromBody] ProductDTO updates)
+        public async Task<ActionResult<ProductDTO>> UpdateProduct(int productId, ProductDTO updates)
         {
             try
             {
                 if (productId == 0)
-                    return await Task.Run(() => BadRequest("No product id provided!"));
+                    return BadRequest("No product id provided!");
 
                 if (updates == null)
-                    return await Task.Run(() => BadRequest("No updates provided!"));
+                    return BadRequest("No updates provided!");
 
                 _logger.LogInformation("Updating product with id: '{0}'", productId);
-                var newProduct = await Task.Run(() => _productManager.UpdateProduct(productId, updates));
+                var newProduct = await _productManager.UpdateProduct(productId, updates);
                 _logger.LogInformation("Product with id: '{0}' was modified", productId);
 
-                return await Task.Run(() => Json(newProduct));
+                return Ok(newProduct);
             }
             catch (Exception)
             {
-                return await Task.Run(() => StatusCode(StatusCodes.Status500InternalServerError, "Error updating product!"));
+                _logger.LogError("Error updating product!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error updating product!");
             }
         }
 
         [HttpDelete("{productId}")]
-        public async Task<ActionResult> DeleteProduct(int productId)
+        public async Task<ActionResult<bool>> DeleteProduct(int productId)
         {
             try
             {
                 if (productId == 0)
-                    return await Task.Run(() => BadRequest("No product id provided!"));
+                    return BadRequest("No product id provided!");
 
                 _logger.LogInformation("Deleteing product with id: '{0}'", productId);
-                await Task.Run(() => _productManager.DeleteProduct(productId));
+                var result = await _productManager.DeleteProduct(productId);
                 _logger.LogInformation("Product with id: {0} was deleted", productId);
 
-                return await Task.Run(() => Ok());
+                return Ok(result);
             }
             catch (Exception)
             {
-                return await Task.Run(() => StatusCode(StatusCodes.Status500InternalServerError, "Error deleting product!"));
+                _logger.LogError("Error deleting product!");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting product!");
             }
         }
     }
