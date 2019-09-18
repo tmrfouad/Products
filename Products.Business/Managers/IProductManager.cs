@@ -3,21 +3,22 @@ using Products.Data.Repositories;
 using System.Collections.Generic;
 using AutoMapper;
 using Products.Data.Entities;
+using System.Threading.Tasks;
 
 namespace Products.Business.Managers
 {
     public interface IProductManager
     {
-        IEnumerable<ProductDTO> GetProducts();
+        Task<IEnumerable<ProductDTO>> GetProducts();
 
-        IEnumerable<ProductDTO> SearchProducts(string Name);
+        Task<IEnumerable<ProductDTO>> SearchProducts(string Name);
 
-        ProductDTO GetProduct(int ProductId);
+        Task<ProductDTO> GetProduct(int ProductId);
 
-        ProductDTO AddProduct(ProductDTO product);
+        Task<ProductDTO> AddProduct(ProductDTO product);
 
-        ProductDTO UpdateProduct(int ProductId, ProductDTO updates);
+        Task<ProductDTO> UpdateProduct(int ProductId, ProductDTO updates);
 
-        void DeleteProduct(int ProductId);
+        Task<bool> DeleteProduct(int ProductId);
     }
 }

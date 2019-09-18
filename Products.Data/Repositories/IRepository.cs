@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Products.Data.Repositories
 {
@@ -7,16 +8,16 @@ namespace Products.Data.Repositories
     {
         SqlConnection _connection { get; set; }
 
-        IEnumerable<T> GetAll();
+        Task<IEnumerable<T>> GetAll();
 
-        IEnumerable<T> Search(string name);
+        Task<IEnumerable<T>> Search(string name);
 
-        T Get(int id);
+        Task<T> Get(int id);
 
-        T Add(T entity);
+        Task<T> Add(T entity);
 
-        T Update(int id, T updates);
+        Task<T> Update(int id, T updates);
 
-        void Delete(int id);
+        Task<bool> Delete(int id);
     }
 }

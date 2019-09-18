@@ -19,6 +19,7 @@ import { MatDialog, MatDialogRef } from '@angular/material';
 export class ProductsComponent implements AfterViewInit {
   products: Product[];
   @ViewChild('SearchInput') searchInput: ElementRef;
+  isLoading = true;
 
   constructor(private prodService: ProductService, private dialog: MatDialog) {}
 
@@ -29,9 +30,13 @@ export class ProductsComponent implements AfterViewInit {
         startWith(''),
         debounceTime(400),
         distinctUntilChanged(),
-        switchMap(search => this.prodService.search(search))
+      switchMap(search => {
+        this.isLoading = true;
+        return this.prodService.search(search);
+      })
       )
       .subscribe((products: Product[]) => {
+        this.isLoading = false;
         this.products = products;
       });
   }
