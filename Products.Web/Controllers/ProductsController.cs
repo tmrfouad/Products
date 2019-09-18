@@ -36,6 +36,7 @@ namespace Products.Web.Controllers
             }
             catch (Exception)
             {
+                _logger.LogError("Error getting products!");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error getting products!");
             }
         }
@@ -54,6 +55,7 @@ namespace Products.Web.Controllers
             }
             catch (Exception)
             {
+                _logger.LogError("Error getting products!");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error getting products!");
             }
         }
@@ -77,6 +79,7 @@ namespace Products.Web.Controllers
             }
             catch (Exception)
             {
+                _logger.LogError("Error getting product!");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error getting product!");
             }
         }
@@ -97,6 +100,7 @@ namespace Products.Web.Controllers
             }
             catch (Exception)
             {
+                _logger.LogError("Error adding product!");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error adding product!");
             }
         }
@@ -120,6 +124,7 @@ namespace Products.Web.Controllers
             }
             catch (Exception)
             {
+                _logger.LogError("Error updating product!");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error updating product!");
             }
         }
@@ -140,6 +145,7 @@ namespace Products.Web.Controllers
             }
             catch (Exception)
             {
+                _logger.LogError("Error deleting product!");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error deleting product!");
             }
         }
